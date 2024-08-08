@@ -8,7 +8,7 @@ resource "aws_security_group" "elasticsearch-alb-sg" {
 resource "aws_security_group_rule" "elasticsearch-alb-sg-ingress-rule-es" {
   type        = "ingress"
   protocol    = "tcp"
-  cidr_blocks = ["0.0.0.0/0"]
+  security_groups = var.alb_security_groups
   from_port   = 9200
   to_port     = 9200
 
@@ -31,7 +31,7 @@ resource "aws_security_group_rule" "elasticsearch-alb-sg-ingress-rule-kibana" {
   count    = length(keys(var.clients_count)) > 0 || local.singlenode_mode ? 1 : 0
   type        = "ingress"
   protocol    = "tcp"
-  cidr_blocks = ["0.0.0.0/0"]
+  security_groups = var.alb_security_groups
   from_port   = 5601
   to_port     = 5601
 

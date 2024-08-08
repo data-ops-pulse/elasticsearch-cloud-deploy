@@ -1,8 +1,10 @@
 data "local_file" "cluster_bootstrap_state" {
+  count = local.singlenode_mode ? 0 : 1
   filename = "${path.module}/cluster_bootstrap_state"
 }
 
 data "template_file" "master_userdata_script" {
+  count = local.singlenode_mode ? 0 : 1
   template = file("${path.module}/../templates/aws_user_data.sh")
   vars = merge(local.user_data_common, {
     startup_script = "master.sh",
@@ -11,6 +13,7 @@ data "template_file" "master_userdata_script" {
 }
 
 data "template_file" "bootstrap_userdata_script" {
+  count = local.singlenode_mode ? 0 : 1
   template = file("${path.module}/../templates/aws_user_data.sh")
   vars = merge(local.user_data_common, {
     startup_script = "bootstrap.sh",
@@ -19,6 +22,7 @@ data "template_file" "bootstrap_userdata_script" {
 }
 
 resource "aws_launch_template" "master" {
+  count = local.singlenode_mode ? 0 : 1
   name_prefix   = "elasticsearch-${var.es_cluster}-master-nodes"
   image_id      = data.aws_ami.elasticsearch.id
   instance_type = var.master_instance_type
@@ -118,6 +122,7 @@ resource "aws_instance" "bootstrap_node" {
 }
 
 resource "null_resource" "cluster_bootstrap_state" {
+  count = local.singlenode_mode ? 0 : 1
   provisioner "local-exec" {
     command = "printf 1 > ${path.module}/cluster_bootstrap_state"
   }

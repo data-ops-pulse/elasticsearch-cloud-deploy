@@ -217,3 +217,20 @@ variable "auto_shut_down_bootstrap_node" {
   description = "disable to prevent bootstrap node from shutting down"
   default = true
 }
+variable "disk_type" {
+  description = "disk type"
+  default = "gp3"
+}
+variable "data_disk_iops" {
+  description = "data disk IOPS"
+  default = "3000"
+}
+variable "data_disk_throughput" {
+  description = "data disk throughput"
+  default = "125"
+}
+
+variable "alb_security_groups" {
+  description = "security groups with ALB access"
+  default = []
+}
