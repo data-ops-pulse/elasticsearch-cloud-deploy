@@ -18,12 +18,6 @@ variable "clients_subnet_ids" {
   default     = {}
 }
 
-variable "cluster_subnet_ids" {
-  description = "Subnets to run cluster nodes in, defined as avalabilityZone -> subnets mapping. Will autofill to all available subnets in AZ when left empty."
-  type        = map(list(string))
-  default     = {}
-}
-
 variable "key_name" {
   description = "Key name to be used with the launched EC2 instances."
   default     = "elasticsearch"
