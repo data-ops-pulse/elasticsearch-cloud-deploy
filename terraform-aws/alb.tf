@@ -6,9 +6,10 @@ resource "aws_security_group" "elasticsearch-alb-sg" {
 
 # allow ES port access
 resource "aws_security_group_rule" "elasticsearch-alb-sg-ingress-rule-es" {
+  for_each   = toset(var.alb_security_groups)
   type        = "ingress"
   protocol    = "tcp"
-  security_groups = var.alb_security_groups
+  source_security_group_id = each.key
   from_port   = 9200
   to_port     = 9200
 
@@ -28,10 +29,11 @@ resource "aws_security_group_rule" "elasticsearch-alb-sg-egress-rule-all" {
 
 # allow Kibana port access
 resource "aws_security_group_rule" "elasticsearch-alb-sg-ingress-rule-kibana" {
+  for_each   = toset(var.alb_security_groups)
   count    = length(keys(var.clients_count)) > 0 || local.singlenode_mode ? 1 : 0
   type        = "ingress"
   protocol    = "tcp"
-  security_groups = var.alb_security_groups
+  source_security_group_id = each.key
   from_port   = 5601
   to_port     = 5601
 
