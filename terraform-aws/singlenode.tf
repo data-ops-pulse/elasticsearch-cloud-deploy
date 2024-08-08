@@ -40,7 +40,7 @@ resource "aws_autoscaling_group" "singlenode" {
   default_cooldown = 30
   force_delete     = true
 
-  vpc_zone_identifier = [local.singlenode_subnet_id]
+  vpc_zone_identifier = [var.singlenode_subnet_id]
 
   target_group_arns = [
     aws_lb_target_group.esearch-p9200-tg.arn,

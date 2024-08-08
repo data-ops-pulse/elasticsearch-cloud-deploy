@@ -148,12 +148,17 @@ variable "s3_backup_bucket" {
   default     = ""
 }
 
-variable "alb_subnets" {
-  description = "Subnets to run the ALB in. Defaults to all VPC subnets."
+variable "cluster_subnet_ids" {
+  description = "Subnets for the cluster. Defaults to all VPC subnets."
   default     = []
 }
 
 variable "singlenode_az" {
+  description = "This variable is required when running in singlenode mode. Singlenode mode is enabled when masters_count, datas_count and clients_count are all empty,"
+  default     = ""
+}
+
+variable "singlenode_subnet_id" {
   description = "This variable is required when running in singlenode mode. Singlenode mode is enabled when masters_count, datas_count and clients_count are all empty,"
   default     = ""
 }
@@ -216,4 +221,21 @@ variable "log_level" {
 variable "auto_shut_down_bootstrap_node" {
   description = "disable to prevent bootstrap node from shutting down"
   default = true
+}
+variable "disk_type" {
+  description = "disk type"
+  default = "gp3"
+}
+variable "data_disk_iops" {
+  description = "data disk IOPS"
+  default = "3000"
+}
+variable "data_disk_throughput" {
+  description = "data disk throughput"
+  default = "125"
+}
+
+variable "alb_security_groups" {
+  description = "security groups with ALB access"
+  default = []
 }

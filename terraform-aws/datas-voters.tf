@@ -1,4 +1,5 @@
 data "template_file" "data_voters_userdata_script" {
+  count = local.singlenode_mode ? 0 : 1
   template = file("${path.module}/../templates/aws_user_data.sh")
   vars = merge(local.user_data_common, {
     heap_size = var.data_heap_size
@@ -8,6 +9,7 @@ data "template_file" "data_voters_userdata_script" {
 }
 
 resource "aws_launch_template" "data_voters" {
+  count = local.singlenode_mode ? 0 : 1
   name_prefix   = "elasticsearch-${var.es_cluster}-data-voters-nodes"
   image_id      = data.aws_ami.elasticsearch.id
   instance_type = var.data_instance_type
@@ -44,7 +46,7 @@ resource "aws_autoscaling_group" "data_voters_nodes" {
   default_cooldown   = 30
   force_delete       = true
 
-  vpc_zone_identifier = local.cluster_subnet_ids[keys(var.data_voters_count)[count.index]]
+  vpc_zone_identifier = var.cluster_subnet_ids
 
   depends_on = [
     aws_autoscaling_group.master_nodes,
