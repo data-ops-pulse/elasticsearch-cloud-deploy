@@ -46,7 +46,7 @@ resource "aws_autoscaling_group" "data_voters_nodes" {
   default_cooldown   = 30
   force_delete       = true
 
-  vpc_zone_identifier = local.cluster_subnet_ids[keys(var.data_voters_count)[count.index]]
+  vpc_zone_identifier = var.cluster_subnet_ids
 
   depends_on = [
     aws_autoscaling_group.master_nodes,

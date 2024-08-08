@@ -44,7 +44,7 @@ resource "aws_autoscaling_group" "client_nodes" {
   default_cooldown   = 30
   force_delete       = true
 
-  vpc_zone_identifier = local.clients_subnet_ids[keys(var.clients_count)[count.index]]
+  vpc_zone_identifier = var.cluster_subnet_ids
 
   target_group_arns = [
     aws_lb_target_group.esearch-p9200-tg.arn,

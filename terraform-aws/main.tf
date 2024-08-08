@@ -22,21 +22,13 @@ locals {
     toset([var.singlenode_az])
   )))
 
-  cluster_subnet_ids = {
-    for i, az in local.all_availability_zones : az => lookup(var.cluster_subnet_ids, az, element(data.aws_subnets.subnets-per-az.*.ids, i))
-  }
-
   clients_subnet_ids = {
     for i, az in local.all_availability_zones : az => lookup(var.clients_subnet_ids, az, element(data.aws_subnets.subnets-per-az.*.ids, i))
   }
 
-  flat_cluster_subnet_ids = flatten(values(local.cluster_subnet_ids))
   flat_clients_subnet_ids = flatten(values(local.clients_subnet_ids))
 
-  bootstrap_node_subnet_id = var.bootstrap_node_subnet_id != "" ? var.bootstrap_node_subnet_id : coalescelist(local.flat_cluster_subnet_ids, [""])[0]
-
   singlenode_mode      = (length(keys(var.masters_count)) + length(keys(var.datas_count)) + length(keys(var.data_voters_count)) + length(keys(var.clients_count))) == 0
-  singlenode_subnet_id = local.singlenode_mode ? local.cluster_subnet_ids[var.singlenode_az][0] : ""
 
   masters_count = local.singlenode_mode ? 0 : sum(concat(values(var.masters_count), values(var.data_voters_count)))
   is_cluster_bootstrapped = data.local_file.cluster_bootstrap_state.content == "1" || !var.requires_bootstrapping

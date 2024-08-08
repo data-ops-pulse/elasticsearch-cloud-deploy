@@ -57,7 +57,7 @@ resource "aws_autoscaling_group" "master_nodes" {
   default_cooldown   = 30
   force_delete       = true
 
-  vpc_zone_identifier = local.cluster_subnet_ids[keys(var.masters_count)[count.index]]
+  vpc_zone_identifier = var.cluster_subnet_ids
 
   launch_template {
     id      = aws_launch_template.master.id
@@ -109,7 +109,7 @@ resource "aws_instance" "bootstrap_node" {
   iam_instance_profile = aws_iam_instance_profile.elasticsearch.id
   user_data            = data.template_file.bootstrap_userdata_script.rendered
   key_name             = var.key_name
-  subnet_id            = local.bootstrap_node_subnet_id
+  subnet_id            = var.cluster_subnet_ids[0]
 
   associate_public_ip_address = false
 
