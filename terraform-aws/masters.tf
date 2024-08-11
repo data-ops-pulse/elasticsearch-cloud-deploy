@@ -1,10 +1,8 @@
 data "local_file" "cluster_bootstrap_state" {
-  count = local.singlenode_mode ? 0 : 1
   filename = "${path.module}/cluster_bootstrap_state"
 }
 
 data "template_file" "master_userdata_script" {
-  count = local.singlenode_mode ? 0 : 1
   template = file("${path.module}/../templates/aws_user_data.sh")
   vars = merge(local.user_data_common, {
     startup_script = "master.sh",
@@ -13,7 +11,6 @@ data "template_file" "master_userdata_script" {
 }
 
 data "template_file" "bootstrap_userdata_script" {
-  count = local.singlenode_mode ? 0 : 1
   template = file("${path.module}/../templates/aws_user_data.sh")
   vars = merge(local.user_data_common, {
     startup_script = "bootstrap.sh",

@@ -29,8 +29,7 @@ resource "aws_security_group_rule" "elasticsearch-alb-sg-egress-rule-all" {
 
 # allow Kibana port access
 resource "aws_security_group_rule" "elasticsearch-alb-sg-ingress-rule-kibana" {
-  for_each   = toset(var.alb_security_groups)
-  count    = length(keys(var.clients_count)) > 0 || local.singlenode_mode ? 1 : 0
+  for_each   = local.alb_kibana_groups
   type        = "ingress"
   protocol    = "tcp"
   source_security_group_id = each.key
@@ -83,7 +82,7 @@ resource "aws_lb" "elasticsearch-alb" {
   internal           = ! var.public_facing
   load_balancer_type = "application"
   security_groups    = [aws_security_group.elasticsearch-alb-sg.id]
-  subnets            = coalescelist(var.cluster_subnets, tolist(data.aws_subnets.all-subnets.ids))
+  subnets            = coalescelist(var.cluster_subnet_ids, tolist(data.aws_subnets.all-subnets.ids))
 
   enable_deletion_protection = false
 }
