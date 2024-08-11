@@ -31,7 +31,7 @@ locals {
   singlenode_mode      = (length(keys(var.masters_count)) + length(keys(var.datas_count)) + length(keys(var.data_voters_count)) + length(keys(var.clients_count))) == 0
 
 
-  alb_kibana_groups    = local.singlenode_mode ? toset(var.alb_security_groups) : {}
+  alb_kibana_groups    = local.singlenode_mode ? toset(var.alb_security_groups) : toset([])
   masters_count = local.singlenode_mode ? 0 : sum(concat(values(var.masters_count), values(var.data_voters_count)))
   is_cluster_bootstrapped = data.local_file.cluster_bootstrap_state.content == "1" || !var.requires_bootstrapping
 

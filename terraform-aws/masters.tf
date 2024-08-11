@@ -3,6 +3,7 @@ data "local_file" "cluster_bootstrap_state" {
 }
 
 data "template_file" "master_userdata_script" {
+  count = local.singlenode_mode ? 0 : 1
   template = file("${path.module}/../templates/aws_user_data.sh")
   vars = merge(local.user_data_common, {
     startup_script = "master.sh",
@@ -11,6 +12,7 @@ data "template_file" "master_userdata_script" {
 }
 
 data "template_file" "bootstrap_userdata_script" {
+  count = local.singlenode_mode ? 0 : 1
   template = file("${path.module}/../templates/aws_user_data.sh")
   vars = merge(local.user_data_common, {
     startup_script = "bootstrap.sh",
@@ -23,7 +25,7 @@ resource "aws_launch_template" "master" {
   name_prefix   = "elasticsearch-${var.es_cluster}-master-nodes"
   image_id      = data.aws_ami.elasticsearch.id
   instance_type = var.master_instance_type
-  user_data     = base64encode(data.template_file.master_userdata_script.rendered)
+  user_data     = base64encode(data.template_file.master_userdata_script[0].rendered)
   key_name      = var.key_name
 
   iam_instance_profile {
@@ -57,7 +59,7 @@ resource "aws_autoscaling_group" "master_nodes" {
   vpc_zone_identifier = var.cluster_subnet_ids
 
   launch_template {
-    id      = aws_launch_template.master.id
+    id      = aws_launch_template.master[0].id
     version = "$Latest"
   }
 
@@ -104,7 +106,7 @@ resource "aws_instance" "bootstrap_node" {
     var.additional_security_groups,
   )
   iam_instance_profile = aws_iam_instance_profile.elasticsearch.id
-  user_data            = data.template_file.bootstrap_userdata_script.rendered
+  user_data            = data.template_file.bootstrap_userdata_script[0].rendered
   key_name             = var.key_name
   subnet_id            = var.cluster_subnet_ids[0]
 
