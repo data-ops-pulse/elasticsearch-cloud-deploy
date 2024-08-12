@@ -1,19 +1,20 @@
-aws_region="us-east-1"
+aws_region="eu-west-1"
 es_cluster="elastic-cluster"
-vpc_id="vpc-somevpc"
-key_name="keyname"
-masters_count = {
-  "us-east-1a" = 3
-}
-datas_count = {
-  "us-east-1a" = 1
-}
-clients_count = {
-  "us-east-1a" = 1
-}
-data_voters_count = {
-  "us-east-1a" = 2
-}
+vpc_id="vpc-0f172e215c1f8a909"
+key_name="pulse-elasticsearch"
+cluster_subnet_ids=["subnet-076de5446c86134fd"]
+#masters_count = {
+#  "us-east-1a" = 3
+#}
+#datas_count = {
+#  "us-east-1a" = 1
+#}
+#clients_count = {
+#  "us-east-1a" = 1
+#}
+#data_voters_count = {
+#  "us-east-1a" = 2
+#}
 
 security_enabled = true
 monitoring_enabled = false

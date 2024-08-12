@@ -1,3 +1,9 @@
+#provider "aws" {
+#  region  = "eu-west-1"
+#  profile = "saml"
+#}
+
+
 resource "random_string" "vm-login-password" {
   length  = 16
   special = false
