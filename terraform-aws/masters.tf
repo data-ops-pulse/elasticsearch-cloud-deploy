@@ -16,7 +16,9 @@ resource "aws_launch_template" "master" {
   iam_instance_profile {
     arn = aws_iam_instance_profile.elasticsearch.arn
   }
-
+  metadata_options {
+    http_tokens = "optional"
+  }
   network_interfaces {
     delete_on_termination       = true
     associate_public_ip_address = false
@@ -91,6 +93,9 @@ resource "aws_instance" "bootstrap_node" {
     var.additional_security_groups,
   )
   iam_instance_profile = aws_iam_instance_profile.elasticsearch.id
+  metadata_options {
+    http_tokens = "optional"
+  }
   user_data     = base64encode(templatefile("${path.module}/../templates/aws_user_data.sh",merge(local.user_data_common, {
     startup_script = "bootstrap.sh",
     heap_size = var.master_heap_size
