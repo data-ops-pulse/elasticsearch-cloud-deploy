@@ -12,7 +12,16 @@
       "Resource": [
         "*"
       ]
-    }
+    },
+    {
+    "Effect": "Allow",
+    "Action": [
+        "secretsmanager:GetSecretValue"
+    ],
+    "Resource": [
+        "${monitoring_secret_arn}"
+    ]
+  }
   ],
   "Version": "2012-10-17"
 }

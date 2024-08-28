@@ -233,3 +233,15 @@ variable "alb_security_groups" {
   description = "security groups with ALB access"
   default = []
 }
+variable "monitoring_secret_arn" {
+  type        = string
+}
+variable "monitoring_host" {
+  type        = string
+}
+variable "monitoring_port" {
+  type        = string
+}
+variable "monitoring_user" {
+  type        = string
+}

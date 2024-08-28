@@ -21,3 +21,7 @@ monitoring_enabled = false
 client_user = "someuser"
 public_facing = false
 auto_shut_down_bootstrap_node = true
+monitoring_user = "admin"
+monitoring_host = "vpc-pulse-staging-monitoring-zx62e2raksjbbu22rxkbdmlq5q.eu-west-1.es.amazonaws.com"
+monitoring_port = "443"
+monitoring_secret_arn = "arn:aws:secretsmanager:eu-west-1:851725620859:secret:staging/monitoring-cluster/admin-uWrHQH"
