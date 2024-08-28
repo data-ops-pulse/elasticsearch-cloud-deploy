@@ -36,5 +36,9 @@ export log_size="${log_size}"
 export security_encryption_key="${security_encryption_key}"
 export reporting_encryption_key="${reporting_encryption_key}"
 export auto_shut_down_bootstrap_node="${auto_shut_down_bootstrap_node}"
+export monitoring_host="${monitoring_host}"
+export monitoring_port="${monitoring_port}"
+export monitoring_secret_arn="${monitoring_secret_arn}"
+export monitoring_user="${monitoring_user}"
 
 /opt/cloud-deploy-scripts/${startup_script}

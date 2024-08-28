@@ -5,8 +5,10 @@ resource "aws_iam_role" "elasticsearch" {
 
 resource "aws_iam_role_policy" "elasticsearch" {
   name = "${var.es_cluster}-elasticsearch-node-init-policy"
-  policy = file(
-    "${path.module}/../assets/node-init.json",
+  policy = templatefile(
+    "${path.module}/../assets/node-init.json",{
+      monitoring_secret_arn = var.monitoring_secret_arn
+    }
   )
   role = aws_iam_role.elasticsearch.id
 }

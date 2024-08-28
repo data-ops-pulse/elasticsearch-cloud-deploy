@@ -10,7 +10,7 @@ if [ "$cloud_provider" == "gcp" ]; then
 fi
 
 /opt/cloud-deploy-scripts/common/config-es.sh
-/opt/cloud-deploy-scripts/common/config-beats.sh
+/opt/cloud-deploy-scripts/common/config-fluentbit.sh
 /opt/cloud-deploy-scripts/$cloud_provider/config-es.sh
 /opt/cloud-deploy-scripts/$cloud_provider/config-es-discovery.sh
 
