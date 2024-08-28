@@ -9,28 +9,27 @@ monitoring_password="$(aws secretsmanager get-secret-value --secret-id $monitori
 
 if [ "${monitoring_host}" != "" ]; then
 	cat <<EOF >/etc/fluent-bit/fluent-bit.conf
-
-  [SERVICE]
+[SERVICE]
       Flush        5
       Log_Level    info
       Parsers_File parsers.conf
 
-  [INPUT]
+[INPUT]
       Name          tail
       Path          $elasticsearch_logs_dir/*.json
       Parser        json
       Tag           elasticsearch_logs
 
-  [OUTPUT]
+[OUTPUT]
       Name          opensearch
       Match         elasticsearch_logs
       Host          $monitoring_host
       Port          $monitoring_port
       Index         elasticsearch-logs
-			Suppress_Type_Name On
+      Suppress_Type_Name On
       HTTP_User     $monitoring_user
       HTTP_Passwd   $monitoring_password
-			tls           On
+      tls           On
 EOF
 
 systemctl restart fluent-bit
