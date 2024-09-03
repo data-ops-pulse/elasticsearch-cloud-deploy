@@ -32,6 +32,7 @@ if [ -f "/etc/kibana/kibana.yml" ]; then
     fi
 
     systemctl daemon-reload
-    systemctl enable kibana.service
-    sudo service kibana restart
+    # For pulse, we do not start Kibana on the client.
+    systemctl disable kibana.service
+    sudo service kibana stop
 fi

@@ -2,7 +2,7 @@
   "description": "Elasticsearch Image",
   "builders": [
     {
-      "profile": "saml",
+      "profile": "pulse-saml",
       "name": "aws",
       "type": "amazon-ebs",
       "ami_name": "elasticsearch7-{{isotime | clean_resource_name}}",
