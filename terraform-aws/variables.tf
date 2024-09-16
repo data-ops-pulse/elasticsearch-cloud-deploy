@@ -245,3 +245,7 @@ variable "monitoring_port" {
 variable "monitoring_user" {
   type        = string
 }
+variable "monitoring_tls_verify" {
+  type        = string
+  description = "On\Off"
+}

@@ -40,5 +40,6 @@ export monitoring_host="${monitoring_host}"
 export monitoring_port="${monitoring_port}"
 export monitoring_secret_arn="${monitoring_secret_arn}"
 export monitoring_user="${monitoring_user}"
+export monitoring_tls_verify="${monitoring_tls_verify}"
 
 /opt/cloud-deploy-scripts/${startup_script}
