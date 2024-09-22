@@ -247,5 +247,5 @@ variable "monitoring_user" {
 }
 variable "monitoring_tls_verify" {
   type        = string
-  description = "On\Off"
+  description = "On\\Off"
 }
