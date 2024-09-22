@@ -30,7 +30,7 @@ if [ "${monitoring_host}" != "" ]; then
       HTTP_User     $monitoring_user
       HTTP_Passwd   $monitoring_password
       tls           On
-			tls.verify		$monitoring_tls_verify
+      tls.verify    $monitoring_tls_verify
 EOF
 
 systemctl restart fluent-bit
