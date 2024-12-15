@@ -3,7 +3,7 @@
   "builders": [
     {
 
-      "profile": "pulse-saml",
+      "profile": "pulse-new",
       "name": "aws",
       "type": "amazon-ebs",
 

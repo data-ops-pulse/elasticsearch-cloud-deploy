@@ -1,7 +1,7 @@
 {
-  "elasticsearch_version": "7.17.23",
+  "elasticsearch_version": "7.17.26",
 
   "aws_region": "eu-west-1",
   "aws_az": "eu-west-1a",
-  "subnet_id": "subnet-09e163617190d26bd"
+  "subnet_id": "subnet-0794d9c7bf487e83c"
 }

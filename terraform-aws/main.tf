@@ -90,50 +90,60 @@ resource "aws_security_group" "elasticsearch_security_group" {
   name        = "elasticsearch-${var.es_cluster}-security-group"
   description = "Elasticsearch ports with ssh"
   vpc_id      = var.vpc_id
-
   tags = {
     Name    = "${var.es_cluster}-elasticsearch"
     cluster = var.es_cluster
   }
+}
 
   # ssh access from everywhere
-  ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
+resource "aws_security_group_rule" "elasticsearch_ingress_ssh" {
+  security_group_id = aws_security_group.elasticsearch_security_group.id
+  type              = "ingress"
+  from_port         = 22
+  to_port           = 22
+  protocol          = "tcp"
+  cidr_blocks = ["0.0.0.0/0"]
+}
 
   # inter-cluster communication over ports 9200-9400
-  ingress {
-    from_port = 9200
-    to_port   = 9400
-    protocol  = "tcp"
-    self      = true
-  }
+resource "aws_security_group_rule" "elasticsearch_ingress_inter_cluster" {
+  security_group_id = aws_security_group.elasticsearch_security_group.id
+  type              = "ingress"
+  from_port         = 9200
+  to_port           = 9400
+  protocol          = "tcp"
+  self              = true
+}
 
   # allow inter-cluster ping
-  ingress {
-    from_port = 8
-    to_port   = 0
-    protocol  = "icmp"
-    self      = true
-  }
+resource "aws_security_group_rule" "elasticsearch_ingress_internal_ping" {
+  security_group_id = aws_security_group.elasticsearch_security_group.id
+  type              = "ingress"
+  from_port         = 8
+  to_port           = 0
+  protocol          = "icmp"
+  self              = true
+}
 
-  # allow alb sg access
-  ingress {
-    from_port       = 9200
-    to_port         = 9200
-    protocol        = "tcp"
-    security_groups = [aws_security_group.elasticsearch-alb-sg.id]
-  }
+   # allow alb sg access
+resource "aws_security_group_rule" "elasticsearch_ingress_alb_access" {
+  security_group_id = aws_security_group.elasticsearch_security_group.id
+  type              = "ingress"
+  from_port         = 9200
+  to_port           = 9200
+  protocol          = "tcp"
+  security_groups = [aws_security_group.elasticsearch-alb-sg.id]
+}
 
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
+   # egress to anywhere
+resource "aws_security_group_rule" "elasticsearch_egress_internal_ping" {
+  security_group_id = aws_security_group.elasticsearch_security_group.id
+  type              = "egress"
+  from_port         = 0
+  to_port           = 0
+  protocol          = "-1"
+  cidr_blocks       = ["0.0.0.0/0"]
 }
 
 resource "aws_security_group" "elasticsearch_clients_security_group" {
