@@ -133,7 +133,7 @@ resource "aws_security_group_rule" "elasticsearch_ingress_alb_access" {
   from_port         = 9200
   to_port           = 9200
   protocol          = "tcp"
-  security_groups = [aws_security_group.elasticsearch-alb-sg.id]
+  source_security_group_id = aws_security_group.elasticsearch-alb-sg.id
 }
 
    # egress to anywhere
