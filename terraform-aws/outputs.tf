@@ -9,3 +9,7 @@ output "vm_password" {
 output "node_security_group" {
   value = aws_security_group.elasticsearch_security_group.id
 }
+
+output "alb_security_group" {
+  value = aws_security_group.elasticsearch-alb-sg.id
+}
