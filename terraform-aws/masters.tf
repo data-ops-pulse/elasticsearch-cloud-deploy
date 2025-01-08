@@ -43,7 +43,7 @@ resource "aws_autoscaling_group" "master_nodes" {
   default_cooldown   = 30
   force_delete       = true
 
-  vpc_zone_identifier = var.cluster_subnet_ids
+  vpc_zone_identifier = var.asg_subnet_ids
 
   launch_template {
     id      = aws_launch_template.master[0].id
@@ -101,7 +101,7 @@ resource "aws_instance" "bootstrap_node" {
     heap_size = var.master_heap_size
   })))
   key_name             = var.key_name
-  subnet_id            = var.cluster_subnet_ids[0]
+  subnet_id            = var.asg_subnet_ids[0]
 
   associate_public_ip_address = false
 
