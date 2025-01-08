@@ -143,13 +143,12 @@ variable "s3_backup_bucket" {
 }
 
 variable "lb_subnet_ids" {
-  description = "Subnets for the cluster. Defaults to all VPC subnets."
+  description = "Subnets for the load balancer. Defaults to all VPC subnets."
   default     = []
 }
 
-
 variable "asg_subnet_ids" {
-  description = "Subnets for the cluster. Defaults to all VPC subnets."
+  description = "Subnets for the auto scaling groups. Defaults to all VPC subnets."
   default     = []
 }
 
