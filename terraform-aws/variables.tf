@@ -142,10 +142,17 @@ variable "s3_backup_bucket" {
   default     = ""
 }
 
-variable "cluster_subnet_ids" {
+variable "lb_subnet_ids" {
   description = "Subnets for the cluster. Defaults to all VPC subnets."
   default     = []
 }
+
+
+variable "asg_subnet_ids" {
+  description = "Subnets for the cluster. Defaults to all VPC subnets."
+  default     = []
+}
+
 
 variable "singlenode_az" {
   description = "This variable is required when running in singlenode mode. Singlenode mode is enabled when masters_count, datas_count and clients_count are all empty,"
