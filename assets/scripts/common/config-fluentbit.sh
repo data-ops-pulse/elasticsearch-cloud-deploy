@@ -5,7 +5,7 @@
 # - monitoring_secret_arn
 # - elasticsearch_logs_dir
 
-monitoring_password="$(aws secretsmanager get-secret-value --secret-id $monitoring_secret_arn --region eu-west-1 | jq -r '.SecretString' | jq -r '.password.result')"
+monitoring_password="$(aws secretsmanager get-secret-value --secret-id $monitoring_secret_arn --region eu-west-1 | jq -r '.SecretString' | jq -r '.password')"
 
 if [ "${monitoring_host}" != "" ]; then
 	cat <<EOF >/etc/fluent-bit/fluent-bit.conf
