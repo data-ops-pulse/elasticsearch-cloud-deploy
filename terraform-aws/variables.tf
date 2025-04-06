@@ -7,6 +7,11 @@ variable "aws_region" {
   type = string
 }
 
+variable "environment" {
+  default = "default"
+}
+
+# networking 
 variable "vpc_id" {
   description = "VPC ID to create the Elasticsearch cluster in"
   type        = string
@@ -18,30 +23,81 @@ variable "clients_subnet_ids" {
   default     = {}
 }
 
+variable "lb_subnet_ids" {
+  description = "Subnets for the load balancer. Defaults to all VPC subnets."
+  default     = []
+}
+
+variable "asg_subnet_ids" {
+  description = "Subnets for the auto scaling groups. Defaults to all VPC subnets."
+  default     = []
+}
+
+variable "ec2_vpc_endpoint_id" {
+  description = "Use to skip creation of ec2 VPC endpoint and reference your own"
+  default     = ""
+}
+
+variable "s3_vpc_endpoint_id" {
+  description = "Use to skip creation of s3 VPC endpoint and reference your own"
+  default     = ""
+}
+
+variable "autoscaling_vpc_endpoint_id" {
+  description = "Use to skip creation of autoscaling VPC endpoint and reference your own"
+  default     = ""
+}
+
+variable "singlenode_az" {
+  description = "This variable is required when running in singlenode mode. Singlenode mode is enabled when masters_count, datas_count and clients_count are all empty,"
+  default     = ""
+}
+
+variable "singlenode_subnet_id" {
+  description = "This variable is required when running in singlenode mode. Singlenode mode is enabled when masters_count, datas_count and clients_count are all empty,"
+  default     = ""
+}
+
+variable "bootstrap_node_subnet_id" {
+  description = "Use to override which subnet the bootstrap node is created in."
+  default     = ""
+}
+
+# security
 variable "key_name" {
   description = "Key name to be used with the launched EC2 instances."
   default     = "elasticsearch"
 }
 
-variable "environment" {
-  default = "default"
+variable "security_enabled" {
+  description = "Whether or not to enable x-pack security on the cluster"
+  default     = false
 }
 
-variable "data_instance_type" {
-  type    = string
-  default = "c5.2xlarge"
+variable "client_user" {
+  description = "The username to use when setting up basic auth on Grafana and Cerebro."
+  default     = "elastic"
 }
 
-variable "master_instance_type" {
-  type    = string
-  default = "c5.large"
+variable "public_facing" {
+  description = "Whether or not the created cluster should be accessible from the public internet"
+  type        = bool
+  default     = true
 }
 
-variable "elasticsearch_volume_size" {
-  type    = string
-  default = "100" # gb
+variable "alb_security_groups" {
+  description = "security groups with ALB access"
+  default = []
 }
 
+# the ability to add additional existing security groups. In our case
+# we have consul running as agents on the box
+variable "additional_security_groups" {
+  type    = list(string)
+  default = []
+}
+
+# vms - general
 variable "volume_encryption" {
   default = true
 }
@@ -54,22 +110,42 @@ variable "elasticsearch_logs_dir" {
   default = "/var/log/elasticsearch"
 }
 
-# default elasticsearch heap size
-variable "data_heap_size" {
-  type    = string
-  default = "8g"
+variable "ebs_optimized" {
+  description = "Whether data instances are EBS optimized or not"
+  default     = "true"
 }
 
-variable "master_heap_size" {
-  type    = string
-  default = "2g"
+variable "elasticsearch_packer_image" {
+  description = "The name of the image family for elasticsearch"
+  default     = "elasticsearch7-packer-image"
 }
 
-variable "client_heap_size" {
-  type    = string
-  default = "1g"
+variable "elasticsearch_blue_packer_image" {
+  description = "The name of the image family for elasticsearch"
+  default     = "elasticsearch7-graviton-packer-image"
 }
 
+variable "kibana_packer_image" {
+  description = "The name of the image family for kibana"
+  default     = "kibana7-packer-image"
+}
+
+variable "log_size" {
+  description = "Retained log4j log size in MB"
+  default     = "128"
+}
+
+variable "log_level" {
+  description = "log4j log level"
+  default     = "INFO"
+}
+
+variable "use_g1gc" {
+  description = "Whether or not to enable G1GC in jvm.options ES config. Left in for backwards compatibility, deployments with Elasticsearch 7.7 and above should not use this."
+  default     = false
+}
+
+# node counts
 variable "masters_count" {
   type        = map(number)
   default     = {}
@@ -88,89 +164,28 @@ variable "data_voters_count" {
   description = "Data voter nodes count per avalabilityZone. If all node counts are empty, will run in singlenode mode."
 }
 
+variable "datas_blue_count" {
+  type        = map(number)
+  default     = {}
+  description = "Data nodes count per avalabilityZone. If all node counts are empty, will run in singlenode mode."
+}
+
+variable "data_voters_blue_count" {
+  type        = map(number)
+  default     = {}
+  description = "Data voter nodes count per avalabilityZone. If all node counts are empty, will run in singlenode mode."
+}
+
 variable "clients_count" {
   type        = map(number)
   default     = {}
   description = "Client nodes count per avalabilityZone. If all node counts are empty, will run in singlenode mode."
 }
 
-variable "security_enabled" {
-  description = "Whether or not to enable x-pack security on the cluster"
-  default     = false
-}
-
-variable "monitoring_enabled" {
-  description = "Whether or not to enable x-pack monitoring on the cluster"
-  default     = false
-}
-
-variable "client_user" {
-  description = "The username to use when setting up basic auth on Grafana and Cerebro."
-  default     = "elastic"
-}
-
-variable "public_facing" {
-  description = "Whether or not the created cluster should be accessible from the public internet"
-  type        = bool
-  default     = true
-}
-
-# the ability to add additional existing security groups. In our case
-# we have consul running as agents on the box
-variable "additional_security_groups" {
-  type    = list(string)
-  default = []
-}
-
-variable "ebs_optimized" {
-  description = "Whether data instances are EBS optimized or not"
-  default     = "true"
-}
-
-variable "xpack_monitoring_host" {
-  description = "ES host to send monitoring data"
-  default     = "http://localhost:9200"
-}
-
-variable "filebeat_monitoring_host" {
-  description = "ES host to send filebeat data"
-  default     = false
-}
-
+# S3
 variable "s3_backup_bucket" {
   description = "S3 bucket for backups"
   default     = ""
-}
-
-variable "lb_subnet_ids" {
-  description = "Subnets for the load balancer. Defaults to all VPC subnets."
-  default     = []
-}
-
-variable "asg_subnet_ids" {
-  description = "Subnets for the auto scaling groups. Defaults to all VPC subnets."
-  default     = []
-}
-
-
-variable "singlenode_az" {
-  description = "This variable is required when running in singlenode mode. Singlenode mode is enabled when masters_count, datas_count and clients_count are all empty,"
-  default     = ""
-}
-
-variable "singlenode_subnet_id" {
-  description = "This variable is required when running in singlenode mode. Singlenode mode is enabled when masters_count, datas_count and clients_count are all empty,"
-  default     = ""
-}
-
-variable "bootstrap_node_subnet_id" {
-  description = "Use to override which subnet the bootstrap node is created in."
-  default     = ""
-}
-
-variable "use_g1gc" {
-  description = "Whether or not to enable G1GC in jvm.options ES config. Left in for backwards compatibility, deployments with Elasticsearch 7.7 and above should not use this."
-  default     = false
 }
 
 variable "DEV_MODE_scripts_s3_bucket" {
@@ -178,54 +193,58 @@ variable "DEV_MODE_scripts_s3_bucket" {
   default     = ""
 }
 
+
+# bootstrapping
 variable "requires_bootstrapping" {
   description = "Overrides cluster bootstrap state"
   default     = true
-}
-
-variable "elasticsearch_packer_image" {
-  description = "The name of the image family for elasticsearch"
-  default     = "elasticsearch7-packer-image"
-}
-
-variable "kibana_packer_image" {
-  description = "The name of the image family for kibana"
-  default     = "kibana7-packer-image"
-}
-
-variable "ec2_vpc_endpoint_id" {
-  description = "Use to skip creation of ec2 VPC endpoint and reference your own"
-  default     = ""
-}
-
-variable "s3_vpc_endpoint_id" {
-  description = "Use to skip creation of s3 VPC endpoint and reference your own"
-  default     = ""
-}
-
-variable "autoscaling_vpc_endpoint_id" {
-  description = "Use to skip creation of autoscaling VPC endpoint and reference your own"
-  default     = ""
-}
-
-variable "log_size" {
-  description = "Retained log4j log size in MB"
-  default     = "128"
-}
-
-variable "log_level" {
-  description = "log4j log level"
-  default     = "INFO"
 }
 
 variable "auto_shut_down_bootstrap_node" {
   description = "disable to prevent bootstrap node from shutting down"
   default = true
 }
+
+# client
+
+variable "client_heap_size" {
+  type    = string
+  default = "1g"
+}
+
+# master properties
+variable "master_instance_type" {
+  type    = string
+  default = "c5.large"
+}
+
+variable "master_heap_size" {
+  type    = string
+  default = "2g"
+}
+
+# data (old)
+# default elasticsearch heap size
+variable "data_heap_size" {
+  type    = string
+  default = "8g"
+}
+
+variable "elasticsearch_blue_volume_size" {
+  type    = string
+  default = "100" # gb
+}
+
+variable "data_instance_type" {
+  type    = string
+  default = "c5.2xlarge"
+}
+
 variable "disk_type" {
   description = "disk type"
   default = "gp3"
 }
+
 variable "data_disk_iops" {
   description = "data disk IOPS"
   default = "3000"
@@ -235,10 +254,36 @@ variable "data_disk_throughput" {
   default = "125"
 }
 
-variable "alb_security_groups" {
-  description = "security groups with ALB access"
-  default = []
+variable "elasticsearch_volume_size" {
+  type    = string
+  default = "100" # gb
 }
+
+# data blue
+variable "data_blue_disk_type" {
+  description = "disk type"
+  default = "gp3"
+}
+variable "data_blue_disk_iops" {
+  description = "data disk IOPS"
+  default = "3000"
+}
+variable "data_blue_disk_throughput" {
+  description = "data disk throughput"
+  default = "125"
+}
+
+variable "data_blue_instance_type" {
+  type    = string
+  default = "c5g.2xlarge"
+}
+
+variable "data_blue_heap_size" {
+  type    = string
+  default = "8g"
+}
+
+# monitoring 
 variable "monitoring_secret_arn" {
   type        = string
 }
@@ -254,4 +299,18 @@ variable "monitoring_user" {
 variable "monitoring_tls_verify" {
   type        = string
   description = "On\\Off"
+}
+variable "monitoring_enabled" {
+  description = "Whether or not to enable x-pack monitoring on the cluster"
+  default     = false
+}
+
+variable "xpack_monitoring_host" {
+  description = "ES host to send monitoring data"
+  default     = "http://localhost:9200"
+}
+
+variable "filebeat_monitoring_host" {
+  description = "ES host to send filebeat data"
+  default     = false
 }
