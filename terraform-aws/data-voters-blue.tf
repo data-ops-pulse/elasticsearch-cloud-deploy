@@ -1,10 +1,11 @@
 
-module "data-blue" {
+module "data-voters-blue" {
   source             = "./modules/nodegroup"
-  name = "data-blue"
+  name = "data-voters-blue"
+  count    = length(keys(var.data_voters_blue_count)) > 0  ? 1 : 0
   
   # nodes
-  node_count = var.datas_blue_count
+  node_count = var.data_voters_blue_count
   singlenode_mode = false
   image = data.aws_ami.elasticsearch-blue.id
   instance_type = var.data_blue_instance_type
@@ -14,7 +15,8 @@ module "data-blue" {
   
   # disk
   extra_disk_exists = true
-  extra_disk_type = var.data_blue_disk_type
+  extra_disk_type = var.blue_disk_type
+  extra_disk_size = var.elasticsearch_blue_volume_size
   extra_disk_iops = var.data_blue_disk_iops
   extra_disk_throughput = var.data_blue_disk_throughput
   extra_disk_encryption = var.volume_encryption

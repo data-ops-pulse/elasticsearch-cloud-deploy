@@ -182,6 +182,12 @@ variable "clients_count" {
   description = "Client nodes count per avalabilityZone. If all node counts are empty, will run in singlenode mode."
 }
 
+variable "masters_blue_count" {
+  type        = map(number)
+  default     = {}
+  description = "Data voter nodes count per avalabilityZone. If all node counts are empty, will run in singlenode mode."
+}
+
 # S3
 variable "s3_backup_bucket" {
   description = "S3 bucket for backups"
@@ -259,11 +265,14 @@ variable "elasticsearch_volume_size" {
   default = "100" # gb
 }
 
-# data blue
-variable "data_blue_disk_type" {
+# blue
+variable "blue_disk_type" {
   description = "disk type"
   default = "gp3"
 }
+
+# data blue
+
 variable "data_blue_disk_iops" {
   description = "data disk IOPS"
   default = "3000"
@@ -281,6 +290,19 @@ variable "data_blue_instance_type" {
 variable "data_blue_heap_size" {
   type    = string
   default = "8g"
+}
+
+# master blue
+
+
+variable "master_blue_instance_type" {
+  type    = string
+  default = "c6g.large"
+}
+
+variable "master_blue_heap_size" {
+  type    = string
+  default = "2g"
 }
 
 # monitoring 

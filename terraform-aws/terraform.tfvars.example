@@ -17,6 +17,12 @@ data_voters_count = {
 datas_blue_count = {
   "eu-west-1a" = 1
 }
+data_voters_blue_count = {
+  "eu-west-1a" = 2
+}
+masters_blue_count = {
+  "eu-west-1a" = 1
+}
 
 security_enabled = true
 monitoring_enabled = false
@@ -36,3 +42,5 @@ data_heap_size="4g"
 elasticsearch_blue_volume_size=200
 data_blue_instance_type="m8g.large"
 data_blue_heap_size="4g"
+master_blue_instance_type="c6g.large"
+master_blue_heap_size="2g"
