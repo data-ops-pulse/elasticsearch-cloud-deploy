@@ -11,6 +11,18 @@ data "aws_ami" "elasticsearch" {
   most_recent = true
   owners      = ["self"]
 }
+data "aws_ami" "elasticsearch-blue" {
+  filter {
+    name   = "state"
+    values = ["available"]
+  }
+  filter {
+    name   = "tag:ImageType"
+    values = [var.elasticsearch_blue_packer_image]
+  }
+  most_recent = true
+  owners      = ["self"]
+}
 
 // Find the latest available AMI for the Kibana client node
 data "aws_ami" "kibana_client" {
@@ -25,4 +37,3 @@ data "aws_ami" "kibana_client" {
   most_recent = true
   owners      = ["self"]
 }
-

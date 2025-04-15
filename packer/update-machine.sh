@@ -13,7 +13,7 @@ sudo -E apt-get upgrade -y
 sudo -E apt-get install -y software-properties-common git python3-dev htop ntp jq apt-transport-https unzip
 
 if [[ $PACKER_BUILD_NAME == "aws" ]]; then
-	sudo -E apt-get install -y awscli
+	snap install aws-cli --classic
 fi
 
 # Disable daily apt unattended updates.
