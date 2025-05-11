@@ -336,3 +336,7 @@ variable "filebeat_monitoring_host" {
   description = "ES host to send filebeat data"
   default     = false
 }
+
+variable "ssh_access_ip" {
+  default     = ""
+}

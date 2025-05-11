@@ -27,7 +27,8 @@
       "ssh_username": "ubuntu",
       "tags": {
         "ImageType": "{{user `elasticsearch_image_type`}}"
-      }
+      },
+      "encrypt_boot": true
     },
     {
       "name": "azure",
