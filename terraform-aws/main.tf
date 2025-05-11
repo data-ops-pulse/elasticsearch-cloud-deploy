@@ -96,14 +96,15 @@ resource "aws_security_group" "elasticsearch_security_group" {
   }
 }
 
-  # ssh access from everywhere
+# ssh access from ip
 resource "aws_security_group_rule" "elasticsearch_ingress_ssh" {
+  count = var.ssh_access_ip == "" ? 0 : 1
   security_group_id = aws_security_group.elasticsearch_security_group.id
   type              = "ingress"
   from_port         = 22
   to_port           = 22
   protocol          = "tcp"
-  cidr_blocks = ["0.0.0.0/0"]
+  cidr_blocks = ["${var.ssh_access_ip}/32"]
 }
 
   # inter-cluster communication over ports 9200-9400
