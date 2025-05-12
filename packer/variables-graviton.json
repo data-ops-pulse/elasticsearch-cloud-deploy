@@ -6,6 +6,7 @@
   "subnet_id": "subnet-0794d9c7bf487e83c",
   "source_ami_name": "ubuntu/images/hvm-ssd-gp3/ubuntu-noble-24.04-arm64-server-*",
   "elasticsearch_image_type": "elasticsearch7-graviton-packer-image",
+  "kibana_image_type": "kibana7-graviton-packer-image",
   "instance_type": "t4g.micro"
   
 }

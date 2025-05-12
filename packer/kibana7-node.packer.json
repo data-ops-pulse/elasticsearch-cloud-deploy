@@ -31,7 +31,7 @@
 
       "subnet_id": "{{user `subnet_id`}}",
       "tags": {
-        "ImageType": "kibana7-packer-image"
+        "ImageType": "{{user `kibana_image_type`}}"
       }
     },
     {
