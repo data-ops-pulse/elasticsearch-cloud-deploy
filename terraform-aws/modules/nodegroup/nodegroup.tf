@@ -5,7 +5,8 @@ resource "aws_launch_template" "node-group" {
   instance_type = var.instance_type
   user_data     = base64encode(templatefile("${path.module}/../../../templates/aws_user_data.sh",merge(var.user_data_common, {
     startup_script = "${var.startup_script}",
-    heap_size = var.heap_size
+    heap_size = var.heap_size,
+    is_voting_only = var.is_voting_only
   })))
 
 

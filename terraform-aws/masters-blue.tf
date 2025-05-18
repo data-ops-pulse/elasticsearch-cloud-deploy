@@ -12,6 +12,7 @@ module "masters-blue" {
   heap_size = var.master_blue_heap_size
   startup_script = "master.sh"
   user_data_common = local.user_data_common
+  is_voting_only = "false"
   
   # disk
   extra_disk_exists = true

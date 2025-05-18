@@ -92,3 +92,6 @@ variable "asg_subnet_ids" {
   description = "Subnets for the auto scaling groups. Defaults to all VPC subnets."
   default     = []
 }
+variable "is_voting_only" {
+  default     = "false"
+}
