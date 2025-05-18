@@ -12,6 +12,7 @@ module "data-voters-blue" {
   heap_size = var.data_blue_heap_size
   startup_script = "data.sh"
   user_data_common = local.user_data_common
+  is_voting_only      = "true"
   
   # disk
   extra_disk_exists = true
