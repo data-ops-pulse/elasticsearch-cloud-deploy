@@ -38,7 +38,7 @@ locals {
 
 
   alb_kibana_groups    = local.singlenode_mode ? toset(var.alb_security_groups) : toset([])
-  masters_count = local.singlenode_mode ? 0 : sum(concat(values(var.masters_count), values(var.data_voters_count)))
+  masters_count = local.singlenode_mode ? 0 : length(keys(var.masters_blue_count)) + length(keys(var.masters_count))
   is_cluster_bootstrapped = data.local_file.cluster_bootstrap_state.content == "1" || !var.requires_bootstrapping
 
   user_data_common = {
