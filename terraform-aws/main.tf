@@ -34,7 +34,7 @@ locals {
 
   flat_clients_subnet_ids = flatten(values(local.clients_subnet_ids))
 
-  singlenode_mode      = (length(keys(var.masters_count)) + length(keys(var.datas_count)) + length(keys(var.data_voters_count)) + length(keys(var.clients_count))) == 0
+  singlenode_mode      = (length(keys(var.masters_count)) + length(keys(var.datas_count)) + length(keys(var.data_voters_count)) + length(keys(var.clients_count)) + length(keys(var.masters_blue_count)) + length(keys(var.datas_blue_count)) + length(keys(var.data_voters_blue_count))) == 0
 
 
   alb_kibana_groups    = local.singlenode_mode ? toset(var.alb_security_groups) : toset([])
