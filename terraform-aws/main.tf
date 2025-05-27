@@ -34,11 +34,12 @@ locals {
 
   flat_clients_subnet_ids = flatten(values(local.clients_subnet_ids))
 
-  singlenode_mode      = (length(keys(var.masters_count)) + length(keys(var.datas_count)) + length(keys(var.data_voters_count)) + length(keys(var.clients_count)) + length(keys(var.masters_blue_count)) + length(keys(var.datas_blue_count)) + length(keys(var.data_voters_blue_count))) == 0
+  singlenode_mode      = (sum(values(var.masters_blue_count)) + sum(values(var.masters_count)) + sum(values(var.data_voters_count)) + sum(values(var.data_voters_blue_count)) +  sum(values(var.datas_count)) +  sum(values(var.datas_blue_count))) == 0
 
 
   alb_kibana_groups    = local.singlenode_mode ? toset(var.alb_security_groups) : toset([])
-  masters_count = local.singlenode_mode ? 0 : length(keys(var.masters_blue_count)) + length(keys(var.masters_count)) + length(keys(var.data_voters_count)) + length(keys(var.data_voters_blue_count))
+  masters_count = local.singlenode_mode ? 0 : sum(values(var.masters_blue_count)) + sum(values(var.masters_count)) + sum(values(var.data_voters_count)) + sum(values(var.data_voters_blue_count)) 
+
   is_cluster_bootstrapped = data.local_file.cluster_bootstrap_state.content == "1" || !var.requires_bootstrapping
 
   user_data_common = {
