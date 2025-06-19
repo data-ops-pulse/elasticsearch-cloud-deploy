@@ -1,6 +1,3 @@
-data "local_file" "cluster_bootstrap_state" {
-  filename = "${path.module}/cluster_bootstrap_state"
-}
 
 resource "aws_launch_template" "master" {
   count = local.singlenode_mode ? 0 : 1
@@ -111,17 +108,4 @@ resource "aws_instance" "bootstrap_node" {
     Cluster     = "${var.environment}-${var.es_cluster}"
     Role        = "bootstrap"
   }
-}
-
-resource "null_resource" "cluster_bootstrap_state" {
-  count = local.singlenode_mode ? 0 : 1
-  provisioner "local-exec" {
-    command = "printf 1 > ${path.module}/cluster_bootstrap_state"
-  }
-  provisioner "local-exec" {
-    when    = destroy
-    command = "printf 0 > ${path.module}/cluster_bootstrap_state"
-  }
-
-  depends_on = [aws_instance.bootstrap_node]
 }

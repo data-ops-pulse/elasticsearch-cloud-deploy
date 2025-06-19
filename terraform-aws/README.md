@@ -67,7 +67,7 @@ All nodes with the `client` role will be attached to an ALB, so access to all cl
 
 ### Cluster bootstrap
 Deploying a cluster in non single-node mode requires [bootstrapping the cluster](https://www.elastic.co/guide/en/elasticsearch/reference/master/modules-discovery-bootstrap-cluster.html).  
-We do this automatically, by spinning up a special bootstrap node, and terminating it once finished. This only happens once, first time you deploy the cluster. State information on whether cluster is bootstrapped or not is kept in a local file `cluster_bootstrap_state` which is used on later `terraform apply` runs (use `printf 0 > cluster_bootstrap_state` to reset it)
+We do this automatically, by spinning up a special bootstrap node, and terminating it once finished. This only happens once, first time you deploy the cluster. State information on whether bootstrapping is required or not is kept in the variable `requires_bootstrapping`.
 After the bootstrap node has terminated, you can start using the cluster.
 
 ### Security groups
