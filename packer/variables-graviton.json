@@ -1,9 +1,9 @@
 {
   "elasticsearch_version": "7.17.26",
 
-  "aws_region": "eu-west-1",
-  "aws_az": "eu-west-1a",
-  "subnet_id": "subnet-0794d9c7bf487e83c",
+  "aws_region": "us-east-1",
+  "aws_az": "us-east-1a",
+  "subnet_id": "subnet-01536a2a00e458f6d",
   "source_ami_name": "ubuntu/images/hvm-ssd-gp3/ubuntu-noble-24.04-arm64-server-*",
   "elasticsearch_image_type": "elasticsearch7-graviton-packer-image",
   "instance_type": "t4g.micro"
