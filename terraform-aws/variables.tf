@@ -115,19 +115,22 @@ variable "ebs_optimized" {
   default     = "true"
 }
 
-variable "elasticsearch_packer_image" {
-  description = "The name of the image family for elasticsearch"
-  default     = "elasticsearch7-packer-image"
+variable "elasticsearch_ami_id" {
+  description = "The AMI ID for elasticsearch"
+  type        = string
+  default     = ""
 }
 
-variable "elasticsearch_blue_packer_image" {
-  description = "The name of the image family for elasticsearch"
-  default     = "elasticsearch7-graviton-packer-image"
+variable "elasticsearch_blue_ami_id" {
+  description = "The AMI ID for elasticsearch blue"
+  type        = string
+  default     = ""
 }
 
-variable "kibana_packer_image" {
-  description = "The name of the image family for kibana"
-  default     = "kibana7-packer-image"
+variable "kibana_ami_id" {
+  description = "The AMI ID for kibana"
+  type        = string
+  default     = ""
 }
 
 variable "log_size" {

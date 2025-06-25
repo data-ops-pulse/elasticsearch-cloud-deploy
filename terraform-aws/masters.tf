@@ -1,8 +1,7 @@
-
 resource "aws_launch_template" "master" {
   count = local.singlenode_mode ? 0 : 1
   name_prefix   = "elasticsearch-${var.es_cluster}-master-nodes"
-  image_id      = data.aws_ami.elasticsearch.id
+  image_id      = var.elasticsearch_ami_id
   instance_type = var.master_instance_type
   user_data     = base64encode(templatefile("${path.module}/../templates/aws_user_data.sh",merge(local.user_data_common, {
     startup_script = "master.sh",
@@ -81,7 +80,7 @@ resource "aws_autoscaling_group" "master_nodes" {
 resource "aws_instance" "bootstrap_node" {
   count = local.singlenode_mode || local.is_cluster_bootstrapped ? 0 : 1
 
-  ami                                  = data.aws_ami.elasticsearch.id
+  ami                                  = var.elasticsearch_ami_id
   instance_type                        = var.master_instance_type
   instance_initiated_shutdown_behavior = "terminate"
 

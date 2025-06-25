@@ -1,4 +1,3 @@
-
 module "data-voters-blue" {
   source             = "./modules/nodegroup"
   name = "data-voters-blue"
@@ -7,7 +6,7 @@ module "data-voters-blue" {
   # nodes
   node_count = var.data_voters_blue_count
   singlenode_mode = false
-  image = data.aws_ami.elasticsearch-blue.id
+  image = var.elasticsearch_blue_ami_id
   instance_type = var.data_blue_instance_type
   heap_size = var.data_blue_heap_size
   startup_script = "data.sh"
