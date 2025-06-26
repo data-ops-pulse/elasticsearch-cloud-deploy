@@ -1,7 +1,7 @@
-provider "aws" {
-  region  = "eu-west-1"
-  profile = "pulse-saml"
-}
+#provider "aws" {
+#  region  = "eu-west-1"
+#  profile = "pulse-saml"
+#}
 
 
 resource "random_string" "vm-login-password" {
