@@ -1,7 +1,7 @@
 resource "aws_launch_template" "single_node" {
   count = local.singlenode_mode ? 1 : 0
   name_prefix   = "elasticsearch-${var.es_cluster}-single-node"
-  image_id      = data.aws_ami.kibana_client.id
+  image_id      = var.kibana_ami_id
   instance_type = var.data_instance_type
   user_data     = base64encode(templatefile("${path.module}/../templates/aws_user_data.sh",merge(local.user_data_common, {
     startup_script = "singlenode.sh",

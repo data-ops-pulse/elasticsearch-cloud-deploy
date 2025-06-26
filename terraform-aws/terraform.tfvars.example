@@ -6,13 +6,13 @@ asg_subnet_ids=["subnet-0138e23df927ce374"]
 lb_subnet_ids=["subnet-0138e23df927ce374"]
 
 masters_count = {
-  "eu-west-1a" = 1
+  "eu-west-1a" = 0
 }
 datas_count = {
-  "eu-west-1a" = 1
+  "eu-west-1a" = 0
 }
 data_voters_count = {
-  "eu-west-1a" = 2
+  "eu-west-1a" = 0
 }
 datas_blue_count = {
   "eu-west-1a" = 1
@@ -37,11 +37,22 @@ monitoring_secret_arn = "arn:aws:secretsmanager:..."
 monitoring_tls_verify = "Off"
 requires_bootstrapping = true
 
-data_instance_type="m5.large"
+data_instance_type="m6g.large"
 data_heap_size="4g"
+
+master_instance_type="c6g.large"
+master_heap_size="2g"
+
 elasticsearch_blue_volume_size=200
 data_blue_instance_type="m8g.large"
 data_blue_heap_size="4g"
+data_blue_disk_throughput=125
+data_blue_disk_iops=3000
+
 master_blue_instance_type="c6g.large"
 master_blue_heap_size="2g"
-#ssh_access_ip="your_ip"
+ssh_access_sg="sg-08df5295c4dda94f5"
+
+elasticsearch_ami_id ="ami-0ee5d2486cd163c5f"
+elasticsearch_blue_ami_id="ami-0ee5d2486cd163c5f"
+kibana_ami_id="ami-016879db93059513d"

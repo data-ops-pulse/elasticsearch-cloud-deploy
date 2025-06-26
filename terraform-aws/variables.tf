@@ -115,19 +115,22 @@ variable "ebs_optimized" {
   default     = "true"
 }
 
-variable "elasticsearch_packer_image" {
-  description = "The name of the image family for elasticsearch"
-  default     = "elasticsearch7-packer-image"
+variable "elasticsearch_ami_id" {
+  description = "The AMI ID for elasticsearch"
+  type        = string
+  default     = ""
 }
 
-variable "elasticsearch_blue_packer_image" {
-  description = "The name of the image family for elasticsearch"
-  default     = "elasticsearch7-graviton-packer-image"
+variable "elasticsearch_blue_ami_id" {
+  description = "The AMI ID for elasticsearch blue"
+  type        = string
+  default     = ""
 }
 
-variable "kibana_packer_image" {
-  description = "The name of the image family for kibana"
-  default     = "kibana7-packer-image"
+variable "kibana_ami_id" {
+  description = "The AMI ID for kibana"
+  type        = string
+  default     = ""
 }
 
 variable "log_size" {
@@ -221,19 +224,16 @@ variable "client_heap_size" {
 # master properties
 variable "master_instance_type" {
   type    = string
-  default = "c5.large"
 }
 
 variable "master_heap_size" {
   type    = string
-  default = "2g"
 }
 
 # data (old)
 # default elasticsearch heap size
 variable "data_heap_size" {
   type    = string
-  default = "8g"
 }
 
 variable "elasticsearch_blue_volume_size" {
@@ -243,7 +243,6 @@ variable "elasticsearch_blue_volume_size" {
 
 variable "data_instance_type" {
   type    = string
-  default = "c5.2xlarge"
 }
 
 variable "disk_type" {
@@ -275,34 +274,27 @@ variable "blue_disk_type" {
 
 variable "data_blue_disk_iops" {
   description = "data disk IOPS"
-  default = "3000"
 }
 variable "data_blue_disk_throughput" {
   description = "data disk throughput"
-  default = "125"
 }
 
 variable "data_blue_instance_type" {
   type    = string
-  default = "c5g.2xlarge"
 }
 
 variable "data_blue_heap_size" {
   type    = string
-  default = "8g"
 }
 
 # master blue
 
-
 variable "master_blue_instance_type" {
   type    = string
-  default = "c6g.large"
 }
 
 variable "master_blue_heap_size" {
   type    = string
-  default = "2g"
 }
 
 # monitoring 
@@ -337,6 +329,6 @@ variable "filebeat_monitoring_host" {
   default     = false
 }
 
-variable "ssh_access_ip" {
+variable "ssh_access_sg" {
   default     = ""
 }
