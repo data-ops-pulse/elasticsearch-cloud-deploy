@@ -1,7 +1,7 @@
-#provider "aws" {
-#  region  = "eu-west-1"
-#  profile = "pulse-saml"
-#}
+provider "aws" {
+  region  = "eu-west-1"
+  profile = "pulse-saml"
+}
 
 
 resource "random_string" "vm-login-password" {
@@ -34,13 +34,12 @@ locals {
 
   flat_clients_subnet_ids = flatten(values(local.clients_subnet_ids))
 
-  singlenode_mode      = ((length(var.masters_count) > 0 ? sum(values(var.masters_count)) : 0) + (length(var.masters_count) > 0 ? sum(values(var.masters_count)) : 0)
-  sum(values(var.masters_blue_count)) + sum(values(var.masters_count)) + sum(values(var.data_voters_count)) + sum(values(var.data_voters_blue_count)) +  sum(values(var.datas_count)) +  sum(values(var.datas_blue_count))) == 0
+  singlenode_mode = sum(values(var.masters_blue_count)) + sum(values(var.masters_count)) + sum(values(var.data_voters_count)) + sum(values(var.data_voters_blue_count)) +  sum(values(var.datas_count)) +  sum(values(var.datas_blue_count)) == 0
 
 
   alb_kibana_groups    = local.singlenode_mode ? toset(var.alb_security_groups) : toset([])
   masters_count = local.singlenode_mode ? 0 : sum(values(var.masters_blue_count)) + sum(values(var.masters_count)) + sum(values(var.data_voters_count)) + sum(values(var.data_voters_blue_count)) 
-
+  
   is_cluster_bootstrapped = !var.requires_bootstrapping
 
   user_data_common = {
@@ -100,13 +99,13 @@ resource "aws_security_group" "elasticsearch_security_group" {
 
 # ssh access from ip
 resource "aws_security_group_rule" "elasticsearch_ingress_ssh" {
-  count = var.ssh_access_ip == "" ? 0 : 1
+  count = var.ssh_access_sg == "" ? 0 : 1
   security_group_id = aws_security_group.elasticsearch_security_group.id
   type              = "ingress"
   from_port         = 22
   to_port           = 22
   protocol          = "tcp"
-  cidr_blocks = ["${var.ssh_access_ip}/32"]
+  source_security_group_id = var.ssh_access_sg
 }
 
   # inter-cluster communication over ports 9200-9400
