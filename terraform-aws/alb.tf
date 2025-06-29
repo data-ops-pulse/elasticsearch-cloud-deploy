@@ -60,7 +60,7 @@ resource "aws_lb_target_group" "esearch-p9200-tg" {
 }
 
 resource "aws_lb_target_group" "kibana-p5601-tg" {
-  count    = length(keys(var.clients_count)) > 0 || local.singlenode_mode ? 1 : 0
+  count    = sum(values(var.clients_count)) > 0 || local.singlenode_mode ? 1 : 0
   name     = "${var.es_cluster}-p5601-tg"
   port     = 5601
   protocol = "HTTP"
@@ -104,7 +104,7 @@ resource "aws_lb_listener" "esearch" {
 }
 
 resource "aws_lb_listener" "kibana" {
-  count    = length(keys(var.clients_count)) > 0 || local.singlenode_mode ? 1 : 0
+  count    = sum(values(var.clients_count)) > 0 || local.singlenode_mode ? 1 : 0
   load_balancer_arn = aws_lb.elasticsearch-alb.arn
   port              = "5601"
   protocol          = "HTTP"

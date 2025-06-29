@@ -4,6 +4,9 @@ vpc_id="vpc-0d602962c24caf5d3"
 key_name="staging-pulse-elasticsearch"
 asg_subnet_ids=["subnet-0138e23df927ce374"]
 lb_subnet_ids=["subnet-0138e23df927ce374"]
+singlenode_az="eu-west-1a"
+singlenode_subnet_id="subnet-0138e23df927ce374"
+
 masters_count = {
   "eu-west-1a" = 0
 }
@@ -17,13 +20,13 @@ data_voters_count = {
   "eu-west-1a" = 0
 }
 datas_blue_count = {
-  "eu-west-1a" = 1
+  "eu-west-1a" = 0
 }
 data_voters_blue_count = {
-  "eu-west-1a" = 2
+  "eu-west-1a" = 0
 }
 masters_blue_count = {
-  "eu-west-1a" = 1
+  "eu-west-1a" = 0
 }
 
 security_enabled = true
