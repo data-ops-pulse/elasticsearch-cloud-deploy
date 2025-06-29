@@ -11,6 +11,9 @@ masters_count = {
 datas_count = {
   "eu-west-1a" = 0
 }
+clients_count = {
+  "eu-west-1a" = 0
+}
 data_voters_count = {
   "eu-west-1a" = 0
 }

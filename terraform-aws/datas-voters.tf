@@ -34,7 +34,7 @@ resource "aws_launch_template" "data_voters" {
 }
 
 resource "aws_autoscaling_group" "data_voters_nodes" {
-  count = length(keys(var.data_voters_count))
+  count = sum(values(var.data_voters_count)) == 0 ? 0 : 1
 
   name               = "elasticsearch-${var.es_cluster}-data-voters-nodes-${keys(var.data_voters_count)[count.index]}"
   max_size           = var.data_voters_count[keys(var.data_voters_count)[count.index]]

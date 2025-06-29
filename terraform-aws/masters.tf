@@ -30,7 +30,7 @@ resource "aws_launch_template" "master" {
 }
 
 resource "aws_autoscaling_group" "master_nodes" {
-  count = length(keys(var.masters_count))
+  count = sum(values(var.masters_count)) == 0 ? 0 : 1
 
   name               = "elasticsearch-${var.es_cluster}-master-nodes-${keys(var.masters_count)[count.index]}"
   max_size           = var.masters_count[keys(var.masters_count)[count.index]]

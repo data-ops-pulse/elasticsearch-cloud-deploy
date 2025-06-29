@@ -31,7 +31,7 @@ resource "aws_launch_template" "client" {
 }
 
 resource "aws_autoscaling_group" "client_nodes" {
-  count = length(keys(var.clients_count))
+  count = sum(values(var.clients_count)) == 0 ? 0 : 1
 
   name               = "elasticsearch-${var.es_cluster}-client-nodes-${keys(var.clients_count)[count.index]}"
   max_size           = var.clients_count[keys(var.clients_count)[count.index]]

@@ -32,7 +32,7 @@ resource "aws_launch_template" "node-group" {
 }
 
 resource "aws_autoscaling_group" "nodegroup-nodes" {
-  count = length(keys(var.node_count))
+  count = sum(values(var.node_count)) == 0 ? 0 : 1
 
   name               = "elasticsearch-${var.es_cluster}-${var.name}-nodes-${keys(var.node_count)[count.index]}"
   max_size           = var.node_count[keys(var.node_count)[count.index]]
