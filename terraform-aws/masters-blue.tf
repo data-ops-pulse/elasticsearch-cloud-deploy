@@ -5,7 +5,7 @@ module "masters-blue" {
   
   # nodes
   node_count = var.masters_blue_count
-  singlenode_mode = false
+  singlenode_mode = local.singlenode_mode
   image = var.elasticsearch_blue_ami_id
   instance_type = var.master_blue_instance_type
   heap_size = var.master_blue_heap_size
