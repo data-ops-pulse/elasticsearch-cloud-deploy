@@ -56,6 +56,7 @@ locals {
     client_user              = var.client_user
     xpack_monitoring_host    = var.xpack_monitoring_host
     filebeat_monitoring_host = var.filebeat_monitoring_host
+    filebeat_logstash_hosts  = jsonencode(var.filebeat_logstash_hosts)
     monitoring_host          = var.monitoring_host
     monitoring_port          = var.monitoring_port
     monitoring_secret_arn    = var.monitoring_secret_arn

@@ -325,8 +325,14 @@ variable "xpack_monitoring_host" {
 }
 
 variable "filebeat_monitoring_host" {
-  description = "ES host to send filebeat data"
-  default     = false
+  description = "ES host to send filebeat data (deprecated, use filebeat_logstash_hosts instead)"
+  default     = ""
+}
+
+variable "filebeat_logstash_hosts" {
+  description = "Logstash hosts to send filebeat data (e.g., logstash.example.com:5044)"
+  type        = list(string)
+  default     = []
 }
 
 variable "ssh_access_sg" {
